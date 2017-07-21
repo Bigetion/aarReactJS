@@ -1,0 +1,130 @@
+/*
+ *
+ * {{ properCase name }} actions
+ *
+ */
+
+import {
+  SEARCH, SEARCH_SUCCESS, SEARCH_ERROR,
+  READ, READ_SUCCESS, READ_ERROR,
+  CREATE, CREATE_SUCCESS, CREATE_ERROR,
+  EDIT, EDIT_SUCCESS, EDIT_ERROR,
+  DELETE, DELETE_SUCCESS, DELETE_ERROR,
+} from './constants';
+
+// SEARCH ------------------------------
+
+export function search(searchParams) {
+  return {
+    type: SEARCH,
+    searchParams,
+  };
+}
+
+export function searchSuccess(result) {
+  return {
+    type: SEARCH_SUCCESS,
+    result,
+  };
+}
+
+export function searchError(message) {
+  return {
+    type: SEARCH_ERROR,
+    message,
+  };
+}
+
+// READ ------------------------------
+
+export function read(id) {
+  return {
+    type: READ,
+    id,
+  };
+}
+
+export function readSuccess(result) {
+  return {
+    type: READ_SUCCESS,
+    result,
+  };
+}
+
+export function readError(message) {
+  return {
+    type: READ_ERROR,
+    message,
+  };
+}
+
+// CREATE ------------------------------
+
+export function create(data) {
+  return {
+    type: CREATE,
+    data,
+  };
+}
+
+export function createSuccess(result) {
+  return {
+    type: CREATE_SUCCESS,
+    result,
+  };
+}
+
+export function createError(message) {
+  return {
+    type: CREATE_ERROR,
+    message,
+  };
+}
+
+// EDIT ------------------------------
+
+export function edit(data) {
+  return {
+    type: EDIT,
+    data,
+  };
+}
+
+export function editSuccess(result) {
+  return {
+    type: EDIT_SUCCESS,
+    result,
+  };
+}
+
+export function editError(message) {
+  return {
+    type: EDIT_ERROR,
+    message,
+  };
+}
+
+// REMOVE ------------------------------
+
+export function remove(data) {
+  return {
+    type: DELETE,
+    data,
+  };
+}
+
+export function removeSuccess(result) {
+  return {
+    type: DELETE_SUCCESS,
+    result,
+  };
+}
+
+export function removeError(message) {
+  return {
+    type: DELETE_ERROR,
+    message,
+  };
+}
+
+//  -----------------------------------

@@ -1,0 +1,26 @@
+import { createSelector } from 'reselect';
+import _ from 'lodash';
+
+/**
+ * Direct selector to the {{ camelCase name }} state domain
+ */
+const select{{ properCase name }}Domain = () => (state) => state.get('{{ camelCase name }}');
+
+/**
+ * Other specific selectors
+ */
+
+
+/**
+ * Default selector used by {{ properCase name }}
+ */
+
+const makeSelect{{ properCase name }} = (item) => createSelector(
+  select{{ properCase name }}Domain(),
+  (substate) => _.isUndefined(item) || _.isNull(item) || item === '' ? substate.toJS() : substate.get(item)
+);
+
+export default makeSelect{{ properCase name }};
+export {
+  select{{ properCase name }}Domain,
+};

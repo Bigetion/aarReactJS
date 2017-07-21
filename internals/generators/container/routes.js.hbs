@@ -1,0 +1,37 @@
+/*
+ *
+ * {{ properCase name }} routes
+ *
+ */
+
+export default function(loadModule, errorLoading, injectReducer, injectSagas, requireAuth){
+  return {
+      path: '{{ camelCase name }}',
+      name: '{{ properCase name }}',
+      onEnter: requireAuth,
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('./reducer'),
+          {{#if wantSagas}}
+          import('./sagas'),
+          {{/if}}
+          import('./index'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, {{#if wantSagas}} sagas,{{/if}} name]) => {
+          injectReducer('{{ camelCase name }}', reducer.default);
+          {{#if wantSagas}}
+          injectSagas(sagas.default);
+          {{/if}}
+          renderRoute(name);
+        });
+
+        importModules.catch(errorLoading);
+    },
+      // put your child routes here
+      childRoutes: [
+      ],
+    }
+};
