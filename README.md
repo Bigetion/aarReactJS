@@ -1,3 +1,3 @@
-AAR Framework with react-bolerplate base.
+AAR Framework with react-boilerplate base.
 
 
