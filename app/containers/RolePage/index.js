@@ -45,11 +45,11 @@ export class RolePage extends React.PureComponent { // eslint-disable-line react
       data: []
     };
 
-    const actionTemplate = function () {
+    const actionTemplate = ({ rowData, rowIndex }) => {
       return (
         <div>
-          <button className="btn btn-primary btn-xs" style={{ marginRight: '5px' }} onClick={() => { console.log(this) }}><i className="fa fa-edit"></i></button>
-          <button className="btn btn-danger btn-xs"><i className="fa fa-trash"></i></button>
+          <button className="btn btn-primary btn-xs" style={{ marginRight: '5px' }} onClick={() => { this.onClickIsEdit(true, rowData) }}><i className="fa fa-edit"></i></button>
+          {(rowData.id_role != 1 && rowData.id_role != 2) && <button className="btn btn-danger btn-xs" onClick={() => { this.onClickDelete(rowData) }}><i className="fa fa-trash"></i></button>}
         </div>
       )
     }
@@ -65,16 +65,8 @@ export class RolePage extends React.PureComponent { // eslint-disable-line react
       header: 'Action',
       accessor: 'action',
       width: 100,
-      onRender: ({ rowData, rowIndex }) => {
-        return (
-          <div>
-            <button className="btn btn-primary btn-xs" style={{ marginRight: '5px' }} onClick={() => { this.onClickIsEdit(true, rowData) }}><i className="fa fa-edit"></i></button>
-            {(rowData.id_role != 1 && rowData.id_role != 2) && <button className="btn btn-danger btn-xs" onClick={() => { this.onClickDelete(rowData) }}><i className="fa fa-trash"></i></button>}
-          </div>
-        )
-      }
-    }
-    ]
+      onRender: actionTemplate
+    }]
   }
 
   componentDidMount() {
