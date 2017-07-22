@@ -63,9 +63,9 @@ class FormAdd extends React.Component { // eslint-disable-line react/prefer-stat
   render() {
     return (
       <div>
-        <div className="box box-primary">
+        <div className="box box-widget">
           <div className="box-header with-border">
-            <h3 className="box-title">Add</h3>
+            <h3 className="box-title">Add Role</h3>
           </div>
           <Formsy.Form onSubmit={this.handleSubmitClicked}>
             <div className="box-body">

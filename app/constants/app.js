@@ -1,1 +1,1 @@
-export const API_URL = 'http://localhost/aarAPIv1';
+export const API_URL = 'http://localhost/aarAPI';

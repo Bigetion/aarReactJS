@@ -68,9 +68,9 @@ class FormEdit extends React.Component { // eslint-disable-line react/prefer-sta
   render() {
     return (
       <div>
-        <div className="box box-primary">
+        <div className="box box-widget">
           <div className="box-header with-border">
-            <h3 className="box-title">Edit</h3>
+            <h3 className="box-title">Edit Role</h3>
           </div>
           <Formsy.Form onSubmit={this.handleSubmitClicked}>
             <div className="box-body">

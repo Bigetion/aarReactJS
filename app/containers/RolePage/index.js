@@ -15,6 +15,7 @@ import rolePageSelector from './selectors';
 import messages from './messages';
 import ReactDataGrid from 'react-data-grid';
 
+import VirtualizedTable from 'components/VirtualizedTable'
 import { confirmDialog } from 'utils/confirmDialog';
 
 import FormAdd from './add';
@@ -33,15 +34,9 @@ export class RolePage extends React.PureComponent { // eslint-disable-line react
 
     this.roleListRowSelected = {};
 
-    this.rowGetterRoleList = this.rowGetterRoleList.bind(this);
-    this.getMinHeight = this.getMinHeight.bind(this);
-
-    this.onRowClickRoleList = this.onRowClickRoleList.bind(this);
     this.onClickIsAdd = this.onClickIsAdd.bind(this);
     this.onClickIsEdit = this.onClickIsEdit.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
-
-    this.onKeyDown = this.onKeyDown.bind(this);
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onCancel = this.onCancel.bind(this);
@@ -60,44 +55,28 @@ export class RolePage extends React.PureComponent { // eslint-disable-line react
     }
 
     this.columns = [{
-      key: 'role_name',
-      name: 'Role Name',
-      width: 200,
-      events: {
-        onKeyDown: this.onKeyDown
-      }
+      header: 'Role Name',
+      accessor: 'role_name',
+      width: 200
     }, {
-      key: 'description',
-      name: 'Description',
-      events: {
-        onKeyDown: this.onKeyDown
+      header: 'Description',
+      accessor: 'description'
+    }, {
+      header: 'Action',
+      accessor: 'action',
+      width: 100,
+      onRender: ({ rowData, rowIndex }) => {
+        return (
+          <div>
+            <button className="btn btn-primary btn-xs" style={{ marginRight: '5px' }} onClick={() => { this.onClickIsEdit(true, rowData) }}><i className="fa fa-edit"></i></button>
+            {(rowData.id_role != 1 && rowData.id_role != 2) && <button className="btn btn-danger btn-xs" onClick={() => { this.onClickDelete(rowData) }}><i className="fa fa-trash"></i></button>}
+          </div>
+        )
       }
-    }];
-  }
-
-  onKeyDown = function (ev) {
-    switch (ev.key) {
-      case 'ArrowUp':
-        if (this.state.roleListSelected[0] > 0) {
-          this.setState({ roleListSelected: [this.state.roleListSelected[0] - 1] });
-          this.roleListRowSelected = this.roleList.data[this.state.roleListSelected[0] - 1];
-        };
-        break;
-      case 'ArrowDown':
-        if (this.state.roleListSelected[0] < this.roleList.data.length - 1) {
-          this.setState({ roleListSelected: [this.state.roleListSelected[0] + 1] });
-          this.roleListRowSelected = this.roleList.data[this.state.roleListSelected[0] + 1];
-        }
-        break;
-      case 'Delete':
-        if (this.roleListRowSelected.id_role == 1 || this.roleListRowSelected.id_role == 2) { } else {
-          this.onClickDelete();
-        }
-
-        break;
-      default: this.roleListRowSelected = this.roleList.data[this.state.roleListSelected[0]];
     }
+    ]
   }
+
   componentDidMount() {
     this.props.onSearch({});
   }
@@ -111,48 +90,23 @@ export class RolePage extends React.PureComponent { // eslint-disable-line react
     }
     if (this.props.onDeleteSuccess) {
       this.props.onSearch({});
-      this.roleListRowSelected = {};
-      // if (this.state.roleListSelected[0] == prevState.roleListSelected[0]) {
-      //   const deletedIndex = this.state.roleListSelected[0];
-      //   let newIndex = deletedIndex - 1;
-      //   this.roleListRowSelected = this.roleList.data[newIndex];
-      //   this.setState({ roleListSelected: [newIndex] });
-      // }
     }
-  }
-
-  rowGetterRoleList(i) {
-    return this.roleList.data[i];
-  }
-
-  getMinHeight() {
-    let maxCountRow = 10;
-    if (this.roleList.data) {
-      if (maxCountRow > this.roleList.data.length) {
-        maxCountRow = this.roleList.data.length;
-      }
-    }
-    return ((maxCountRow + 1) * 35) + 2;
-  }
-
-  onRowClickRoleList(rowIdx, row) {
-    this.roleListRowSelected = row;
-    this.setState({ roleListSelected: [rowIdx] })
   }
 
   onClickIsAdd(condition) {
     this.setState({ isAdd: condition });
   }
 
-  onClickIsEdit(condition) {
+  onClickIsEdit(condition, row) {
+    this.roleListRowSelected = row;
     this.setState({ isEdit: condition });
   }
 
-  onClickDelete() {
+  onClickDelete(rowData) {
     confirmDialog('Do you want to delete this record?', {
       title: 'Delete Confirmation'
     }).then(() => {
-      this.props.onDelete({ idRole: this.roleListRowSelected.id_role });
+      this.props.onDelete({ idRole: rowData.id_role });
     }, () => { });
   }
 
@@ -220,53 +174,26 @@ export class RolePage extends React.PureComponent { // eslint-disable-line react
     }
 
     const table = (
-      <ReactDataGrid
-        ref="rDataGrid"
-        columns={this.columns}
-        rowGetter={this.rowGetterRoleList}
-        rowsCount={this.roleList.data.length || 0}
-        onRowClick={this.onRowClickRoleList}
-        minHeight={this.getMinHeight()}
-        rowSelection={{
-          showCheckbox: false,
-          enableShiftSelect: true,
-          selectBy: {
-            indexes: this.state.roleListSelected
-          }
-        }}
-      />
+      <div className="box box-widget">
+        <VirtualizedTable data={this.roleList.data} columns={this.columns} />
+      </div>
     )
 
 
     const actionButton = (
       <div>
-        <button className="btn btn-primary" style={{ marginTop: '5px', marginRight: '5px' }} onClick={() => { this.onClickIsAdd(true) }}>Add</button>
-        <button disabled={Object.keys(this.roleListRowSelected || {}).length == 0} className="btn btn-primary" style={{ marginTop: '5px', marginRight: '5px' }} onClick={() => { this.onClickIsEdit(true) }}>Edit</button>
-        <button disabled={Object.keys(this.roleListRowSelected || {}).length == 0 || (this.roleListRowSelected.id_role == 1 || this.roleListRowSelected.id_role == 2)} className="btn btn-danger" style={{ marginTop: '5px', marginRight: '5px' }} onClick={this.onClickDelete}>Delete</button>
+        <button className="btn btn-primary" onClick={() => { this.onClickIsAdd(true) }}>Add</button>
       </div>
     )
 
     let renderTemplate = (<div></div>);
 
     if (this.state.isAdd) {
-      renderTemplate = (
-        <div>
-          {addTemplate}
-        </div>
-      )
+      renderTemplate = (<div>{addTemplate}</div>)
     } else if (this.state.isEdit) {
-      renderTemplate = (
-        <div>
-          {editTemplate}
-        </div>
-      )
+      renderTemplate = (<div>{editTemplate}</div>)
     } else {
-      renderTemplate = (
-        <div>
-          {table}
-          {actionButton}
-        </div>
-      )
+      renderTemplate = (<div>{table} {actionButton}</div>)
     }
 
     return (
