@@ -24,8 +24,7 @@ class FormEdit extends React.Component { // eslint-disable-line react/prefer-sta
       touched: []
     }
 
-    this.getError = this.getError.bind(this);
-    this.handleFieldChanged = this.handleFieldChanged.bind(this);
+    this.setNewState = this.setNewState.bind(this);
     this.handleSubmitClicked = this.handleSubmitClicked.bind(this);
     this.handleCancelClicked = this.handleCancelClicked.bind(this);
   }
@@ -33,21 +32,10 @@ class FormEdit extends React.Component { // eslint-disable-line react/prefer-sta
   componentDidMount() {
     let newState = Object.assign(this.props.state, this.state);
     this.setState(newState);
-  }
+  } 
 
-  getError(field) {
-    if (this.state.touched.indexOf(field) > -1) return this.state.validationErrors[field] || "";
-    else return "";
-  }
-
-  handleFieldChanged(field) {
-    return (e) => {
-      let newState = Validations.UpdateState(this.state, {
-        [field]: { $set: e.target.value }
-      });
-      newState.validationErrors = Validations.RunValidate(field, newState, fieldValidations);
-      this.setState(newState);
-    };
+  setNewState(newState) {
+    this.setState(newState);
   }
 
   handleSubmitClicked() {
@@ -76,13 +64,23 @@ class FormEdit extends React.Component { // eslint-disable-line react/prefer-sta
             <div className="box-body">
               <div className="form-group">
                 <label>Role Name</label>
-                <VText name="roleName" placeholder="Role Name" value={this.state.roleName || ''}
-                  onFieldChanged={this.handleFieldChanged("roleName")} errorText={this.getError("roleName")} />
+                <VText
+                  name="roleName"
+                  placeholder="Role Name"
+                  inputState={this.state}
+                  fieldValidations={fieldValidations}
+                  onChangeState={this.setNewState}
+                />
               </div>
               <div className="form-group">
                 <label>Description</label>
-                <VTextArea name="description" placeholder="Description" value={this.state.description || ''}
-                  onFieldChanged={this.handleFieldChanged("description")} errorText={this.getError("description")} />
+                <VTextArea
+                  name="description"
+                  placeholder="Description"
+                  inputState={this.state}
+                  fieldValidations={fieldValidations}
+                  onChangeState={this.setNewState}
+                />
               </div>
             </div>
             <div className="box-footer">

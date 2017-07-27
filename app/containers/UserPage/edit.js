@@ -1,20 +1,20 @@
 import React, { PropTypes } from 'react';
 import Formsy from 'formsy-react';
 import { Validations } from 'validations';
-import { VText, VTextArea } from 'components/ValidateInput';
+import { VSelect, VText, VTextArea } from 'components/ValidateInput';
 import $ from 'jquery';
 
 const fieldValidations = [{
-  name: 'roleName',
-  label: 'Role Name',
+  name: 'userName',
+  label: 'User Name',
   validator: [Validations.Type.required]
 }, {
-  name: 'description',
-  label: 'Description',
+  name: 'role',
+  label: 'Role Name',
   validator: [Validations.Type.required]
 }];
 
-class FormAdd extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class FormEdit extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
 
@@ -29,10 +29,15 @@ class FormAdd extends React.Component { // eslint-disable-line react/prefer-stat
     this.handleCancelClicked = this.handleCancelClicked.bind(this);
   }
 
+  componentDidMount() {
+    let newState = Object.assign(this.props.state, this.state);
+    this.setState(newState);
+  }
+
   setNewState(newState) {
     this.setState(newState);
   }
-  
+
   handleSubmitClicked() {
     let newState = Validations.UpdateState(this.state, {});
     newState.validationErrors = Validations.RunValidateAll(this.state, fieldValidations);
@@ -53,25 +58,29 @@ class FormAdd extends React.Component { // eslint-disable-line react/prefer-stat
       <div>
         <div className="box box-widget">
           <div className="box-header with-border">
-            <h3 className="box-title">Add Role</h3>
+            <h3 className="box-title">Edit User</h3>
           </div>
           <Formsy.Form onSubmit={this.handleSubmitClicked}>
             <div className="box-body">
               <div className="form-group">
-                <label>Role Name</label>
+                <label>User Name</label>
                 <VText
-                  name="roleName"
-                  placeholder="Role Name"
+                  name="userName"
+                  placeholder="User Name"
                   inputState={this.state}
                   fieldValidations={fieldValidations}
                   onChangeState={this.setNewState}
                 />
               </div>
               <div className="form-group">
-                <label>Description</label>
-                <VTextArea
-                  name="description"
-                  placeholder="Description"
+                <label>Role Name</label>
+                <VSelect
+                  name="role"
+                  placeholder="Role Name"
+                  valueKey="id_role"
+                  labelKey="role_name"
+                  value={this.state.role}
+                  options={[{ id_role: '1', role_name: 'Administrator' }, { id_role: '2', role_name: 'Guest' }]}
                   inputState={this.state}
                   fieldValidations={fieldValidations}
                   onChangeState={this.setNewState}
@@ -89,9 +98,10 @@ class FormAdd extends React.Component { // eslint-disable-line react/prefer-stat
   }
 }
 
-FormAdd.propTypes = {
+FormEdit.propTypes = {
+  state: PropTypes.object,
   onSubmit: PropTypes.func,
   onCancel: PropTypes.func,
 };
 
-export default FormAdd
+export default FormEdit

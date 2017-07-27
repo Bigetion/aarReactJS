@@ -1,18 +1,19 @@
 /**
 *
-* VText
+* VSelect
 *
 */
 import React from 'react';
 import PropTypes from 'prop-types';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 import { Validations } from 'validations';
 
-
-class VText extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class VSelect extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
     this.state = {
-      touched: false
+      value: null
     }
     this.handleChange = this.handleChange.bind(this);
   }
@@ -22,10 +23,16 @@ class VText extends React.Component { // eslint-disable-line react/prefer-statel
     else return "";
   }
 
-  handleChange(event) {
-    this.setState({ touched: true })
+  componentDidMount(){
+    this.setState({
+      value: this.props.value || undefined
+    });
+  }
+
+  handleChange(value) {
+    this.setState({ value });
     let newState = Validations.UpdateState(this.props.inputState, {
-      [this.props.name]: { $set: event.target.value }
+      [this.props.name]: { $set: value }
     });
     newState.validationErrors = Validations.RunValidate(this.props.name, newState, this.props.fieldValidations);
     this.props.onChangeState(newState);
@@ -33,27 +40,35 @@ class VText extends React.Component { // eslint-disable-line react/prefer-statel
 
   render() {
     let errorText = (<div></div>);
-    let defaultClass = "form-control"
+    let defaultClass = ""
     if (this.getError()) {
       errorText = (
         <span className="validation-error">{this.getError()}</span>
       )
-      defaultClass = "form-control invalid";
+      defaultClass = "invalid";
     }
     return (
       <div className="form-field text-field">
-        <input type="text" className={defaultClass} placeholder={this.props.placeholder} value={this.props.inputState[this.props.name] || ''} onChange={this.handleChange} />
+        <Select
+          className={defaultClass}
+          name={this.props.name}
+          placeholder={this.props.placeholder}
+          options={this.props.options}
+          value={this.state.value}
+          labelKey={this.props.labelKey}
+          valueKey={this.props.valueKey}
+          onChange={this.handleChange} />
         {errorText}
       </div>
     );
   }
 }
 
-VText.propTypes = {
+VSelect.propTypes = {
   name: React.PropTypes.string.isRequired,
   inputState: React.PropTypes.object.isRequired,
   onChangeState: React.PropTypes.func.isRequired,
   fieldValidations: React.PropTypes.array.isRequired,
 };
 
-export default VText;
+export default VSelect;

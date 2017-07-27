@@ -8,7 +8,7 @@ import {
   SEARCH, SEARCH_SUCCESS, SEARCH_ERROR,
   READ, READ_SUCCESS, READ_ERROR,
   CREATE, CREATE_SUCCESS, CREATE_ERROR,
-  EDIT, EDIT_SUCCESS, EDIT_ERROR,
+  UPDATE, UPDATE_SUCCESS, UPDATE_ERROR,
   DELETE, DELETE_SUCCESS, DELETE_ERROR,
 } from './constants';
 
@@ -81,46 +81,46 @@ export function createError(message) {
   };
 }
 
-// EDIT ------------------------------
+// UPDATE ------------------------------
 
-export function edit(data) {
+export function update(data) {
   return {
-    type: EDIT,
+    type: UPDATE,
     data,
   };
 }
 
-export function editSuccess(result) {
+export function updateSuccess(result) {
   return {
-    type: EDIT_SUCCESS,
+    type: UPDATE_SUCCESS,
     result,
   };
 }
 
-export function editError(message) {
+export function updateError(message) {
   return {
-    type: EDIT_ERROR,
+    type: UPDATE_ERROR,
     message,
   };
 }
 
-// REMOVE ------------------------------
+// DELETE ------------------------------
 
-export function remove(data) {
+export function deletes(deletedId) {
   return {
     type: DELETE,
-    data,
+    deletedId,
   };
 }
 
-export function removeSuccess(result) {
+export function deleteSuccess(result) {
   return {
     type: DELETE_SUCCESS,
     result,
   };
 }
 
-export function removeError(message) {
+export function deleteError(message) {
   return {
     type: DELETE_ERROR,
     message,

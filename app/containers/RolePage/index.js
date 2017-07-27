@@ -109,8 +109,6 @@ export class RolePage extends React.PureComponent { // eslint-disable-line react
     }
 
     if (this.state.isEdit) {
-      this.roleListRowSelected.role_name = myForm.roleName;
-      this.roleListRowSelected.description = myForm.description;
       this.props.onUpdate({
         idRole: this.roleListRowSelected.id_role,
         roleName: myForm.roleName,
