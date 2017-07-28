@@ -13,9 +13,10 @@ class VSelect extends React.Component { // eslint-disable-line react/prefer-stat
   constructor(props) {
     super(props);
     this.state = {
-      value: null
+      value: undefined
     }
     this.handleChange = this.handleChange.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
   }
 
   getError() {
@@ -23,16 +24,27 @@ class VSelect extends React.Component { // eslint-disable-line react/prefer-stat
     else return "";
   }
 
-  componentDidMount(){
-    this.setState({
-      value: this.props.value || undefined
-    });
+  componentWillMount() {
+    if (this.props.defaultValue) {
+      this.setState({
+        value: this.props.defaultValue
+      });
+    }
   }
 
   handleChange(value) {
     this.setState({ value });
     let newState = Validations.UpdateState(this.props.inputState, {
       [this.props.name]: { $set: value }
+    });
+    newState.validationErrors = Validations.RunValidate(this.props.name, newState, this.props.fieldValidations);
+    this.props.onChangeState(newState);
+  }
+
+  handleBlur(event) {
+    this.setState({ touched: true })
+    let newState = Validations.UpdateState(this.props.inputState, {
+      [this.props.name]: { $set: this.state.value }
     });
     newState.validationErrors = Validations.RunValidate(this.props.name, newState, this.props.fieldValidations);
     this.props.onChangeState(newState);
@@ -57,7 +69,9 @@ class VSelect extends React.Component { // eslint-disable-line react/prefer-stat
           value={this.state.value}
           labelKey={this.props.labelKey}
           valueKey={this.props.valueKey}
-          onChange={this.handleChange} />
+          onChange={this.handleChange} 
+          onBlur={this.handleBlur}
+        />
         {errorText}
       </div>
     );
@@ -69,6 +83,7 @@ VSelect.propTypes = {
   inputState: React.PropTypes.object.isRequired,
   onChangeState: React.PropTypes.func.isRequired,
   fieldValidations: React.PropTypes.array.isRequired,
+  defaultValue: React.PropTypes.object
 };
 
 export default VSelect;

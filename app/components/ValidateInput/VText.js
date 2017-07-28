@@ -42,7 +42,7 @@ class VText extends React.Component { // eslint-disable-line react/prefer-statel
     }
     return (
       <div className="form-field text-field">
-        <input type="text" className={defaultClass} placeholder={this.props.placeholder} value={this.props.inputState[this.props.name] || ''} onChange={this.handleChange} />
+        <input type="text" className={defaultClass} placeholder={this.props.placeholder} value={this.props.inputState[this.props.name] || ''} onChange={this.handleChange} onBlur={this.handleChange}/>
         {errorText}
       </div>
     );

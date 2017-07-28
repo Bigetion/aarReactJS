@@ -35,7 +35,7 @@ export function* create() {
       method: 'POST',
       body: JSON.stringify({
         userName: data.userName,
-        description: data.description
+        idRole: data.role.id_role
       }),
     });
 
@@ -59,7 +59,7 @@ export function* update() {
       body: JSON.stringify({
         idUser: data.idUser,
         userName: data.userName,
-        description: data.description
+        idRole: data.role.id_role
       }),
     });
 

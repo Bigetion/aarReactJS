@@ -7,7 +7,7 @@
 import React, { PropTypes } from 'react';
 import { AutoSizer, Column, Table } from 'react-virtualized';
 
-import '!!style-loader!css-loader!./styles.css'
+import '!!style-loader!css-loader!./styles.css';
 // import styled from 'styled-components';
 
 

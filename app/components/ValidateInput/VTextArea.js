@@ -42,7 +42,7 @@ class VTextArea extends React.Component { // eslint-disable-line react/prefer-st
     }
     return (
       <div className="form-field text-field">
-        <textarea className={defaultClass} placeholder={this.props.placeholder} value={this.props.inputState[this.props.name] || ''} onChange={this.handleChange} />
+        <textarea className={defaultClass} placeholder={this.props.placeholder} value={this.props.inputState[this.props.name] || ''} onChange={this.handleChange} onBlur={this.handleChange}/>
         {errorText}
       </div>
     );

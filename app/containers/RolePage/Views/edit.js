@@ -1,16 +1,16 @@
 import React, { PropTypes } from 'react';
 import Formsy from 'formsy-react';
 import { Validations } from 'validations';
-import { VSelect, VText, VTextArea } from 'components/ValidateInput';
+import { VText, VTextArea } from 'components/ValidateInput';
 import $ from 'jquery';
 
 const fieldValidations = [{
-  name: 'userName',
-  label: 'User Name',
+  name: 'roleName',
+  label: 'Role Name',
   validator: [Validations.Type.required]
 }, {
-  name: 'role',
-  label: 'Role Name',
+  name: 'description',
+  label: 'Description',
   validator: [Validations.Type.required]
 }];
 
@@ -29,10 +29,10 @@ class FormEdit extends React.Component { // eslint-disable-line react/prefer-sta
     this.handleCancelClicked = this.handleCancelClicked.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     let newState = Object.assign(this.props.state, this.state);
     this.setState(newState);
-  }
+  } 
 
   setNewState(newState) {
     this.setState(newState);
@@ -58,29 +58,25 @@ class FormEdit extends React.Component { // eslint-disable-line react/prefer-sta
       <div>
         <div className="box box-widget">
           <div className="box-header with-border">
-            <h3 className="box-title">Edit User</h3>
+            <h3 className="box-title">Edit Role</h3>
           </div>
           <Formsy.Form onSubmit={this.handleSubmitClicked}>
             <div className="box-body">
               <div className="form-group">
-                <label>User Name</label>
+                <label>Role Name</label>
                 <VText
-                  name="userName"
-                  placeholder="User Name"
+                  name="roleName"
+                  placeholder="Role Name"
                   inputState={this.state}
                   fieldValidations={fieldValidations}
                   onChangeState={this.setNewState}
                 />
               </div>
               <div className="form-group">
-                <label>Role Name</label>
-                <VSelect
-                  name="role"
-                  placeholder="Role Name"
-                  valueKey="id_role"
-                  labelKey="role_name"
-                  value={this.state.role}
-                  options={[{ id_role: '1', role_name: 'Administrator' }, { id_role: '2', role_name: 'Guest' }]}
+                <label>Description</label>
+                <VTextArea
+                  name="description"
+                  placeholder="Description"
                   inputState={this.state}
                   fieldValidations={fieldValidations}
                   onChangeState={this.setNewState}
