@@ -16,8 +16,6 @@ import messages from '../messages';
 import ReactDataGrid from 'react-data-grid';
 
 import DataGrid from 'components/DataGrid';
-import VirtualizedTable from 'components/VirtualizedTable';
-import MultiGridExample from 'components/VirtualizedTable/multiGrid'
 import { confirmDialog } from 'utils/confirmDialog';
 
 import FormAdd from './add';
@@ -165,12 +163,6 @@ export class RolePage extends React.PureComponent { // eslint-disable-line react
         <FormEdit state={editState} onSubmit={this.onSubmit} onCancel={this.onCancel} />
       );
     }
-
-    const tableOld = (
-      <div className="box box-widget">
-        <VirtualizedTable data={this.roleList.data} columns={this.columns} />
-      </div>
-    )
 
     const table = (
       <DataGrid columns={this.columns} data={this.roleList.data} />

@@ -5,18 +5,29 @@
  */
 
 import { fromJS } from 'immutable';
-import {
-  DEFAULT_ACTION,
-  STATE_DEFAULT,
-} from './constants';
+import * as consts from './constants';
 
 const initialState = {};
-initialState[STATE_DEFAULT] = 'defaultValue'
 
 function permissionPageReducer(state = fromJS(initialState), action) {
   switch (action.type) {
-    case DEFAULT_ACTION:
+    case consts.GET_PERMISSIONS:
       return state;
+    case consts.GET_PERMISSIONS_SUCCESS:
+      return state
+        .set('getPermissionsSuccess', action.result)
+    case consts.GET_PERMISSIONS_ERROR:
+      return state
+        .set('getPermissionsError', action.message);
+    case consts.UPDATE_PERMISSIONS:
+      return state
+        .set('updatedData', action.updatedData);
+    case consts.UPDATE_PERMISSIONS_SUCCESS:
+      return state
+        .set('getPermissionsSuccess', action.result)
+    case consts.UPDATE_PERMISSIONS_ERROR:
+      return state
+        .set('getPermissionsError', action.message);
     default:
       return state;
   }

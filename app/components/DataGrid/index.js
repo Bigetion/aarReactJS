@@ -14,10 +14,14 @@ class DataGrid extends React.PureComponent {
     this.getMinHeight = this.getMinHeight.bind(this);
     this.handleGridSort = this.handleGridSort.bind(this);
 
+    this.onRowsSelected = this.onRowsSelected.bind(this);
+    this.onRowsDeselected = this.onRowsDeselected.bind(this);
+
     this.state = {
       originalRows: [],
       rows: [],
-      sortBy: {}
+      sortBy: {},
+      selectedIndexes:[]
     }
   }
 
@@ -52,6 +56,19 @@ class DataGrid extends React.PureComponent {
     return ((maxCountRow + 1) * 35) + 50;
   }
 
+  onRowsSelected(rows) {
+    const selectedIndexes = this.state.selectedIndexes.concat(rows.map(r => r.rowIdx));
+    if(this.props.onSelected) this.props.onSelected(selectedIndexes);
+    this.setState({selectedIndexes: selectedIndexes});
+  }
+
+  onRowsDeselected(rows) {
+    let rowIndexes = rows.map(r => r.rowIdx);
+    const selectedIndexes = this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1 );
+    if(this.props.onSelected) this.props.onSelected(selectedIndexes);
+    this.setState({selectedIndexes: selectedIndexes});
+  }
+
   render() {
     return (
       <div style={{ marginBottom: "10px" }}>
@@ -61,6 +78,15 @@ class DataGrid extends React.PureComponent {
           rowGetter={(i) => { return this.state.rows[i]; }}
           rowsCount={this.state.rows.length || 0}
           minHeight={this.getMinHeight()}
+          rowSelection={{
+            showCheckbox: true,
+            enableShiftSelect: true,
+            onRowsSelected: this.onRowsSelected,
+            onRowsDeselected: this.onRowsDeselected,
+            selectBy: {
+              indexes: this.state.selectedIndexes
+            }
+          }}
         />
       </div>
     );
@@ -69,7 +95,8 @@ class DataGrid extends React.PureComponent {
 
 DataGrid.propTypes = {
   columns: React.PropTypes.array.isRequired,
-  data: React.PropTypes.array.isRequired
+  data: React.PropTypes.array.isRequired,
+  onSelected: React.PropTypes.func 
 };
 
 export default DataGrid;

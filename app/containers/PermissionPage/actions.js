@@ -5,126 +5,49 @@
  */
 
 import {
-  SEARCH, SEARCH_SUCCESS, SEARCH_ERROR,
-  READ, READ_SUCCESS, READ_ERROR,
-  CREATE, CREATE_SUCCESS, CREATE_ERROR,
-  EDIT, EDIT_SUCCESS, EDIT_ERROR,
-  DELETE, DELETE_SUCCESS, DELETE_ERROR,
+  GET_PERMISSIONS, GET_PERMISSIONS_SUCCESS, GET_PERMISSIONS_ERROR,UPDATE_PERMISSIONS, UPDATE_PERMISSIONS_SUCCESS, UPDATE_PERMISSIONS_ERROR
 } from './constants';
 
 // SEARCH ------------------------------
 
-export function search(searchParams) {
+export function getPermissions(searchParams) {
   return {
-    type: SEARCH,
+    type: GET_PERMISSIONS,
     searchParams,
   };
 }
 
-export function searchSuccess(result) {
+export function getPermissionsSuccess(result) {
   return {
-    type: SEARCH_SUCCESS,
+    type: GET_PERMISSIONS_SUCCESS,
     result,
   };
 }
 
-export function searchError(message) {
+export function getPermissionsError(message) {
   return {
-    type: SEARCH_ERROR,
+    type: GET_PERMISSIONS_ERROR,
     message,
   };
 }
 
-// READ ------------------------------
-
-export function read(id) {
+export function updatePermissions(updatedData) {
   return {
-    type: READ,
-    id,
+    type: UPDATE_PERMISSIONS,
+    updatedData,
   };
 }
 
-export function readSuccess(result) {
+export function updatePermissionsSuccess(result) {
   return {
-    type: READ_SUCCESS,
+    type: UPDATE_PERMISSIONS_SUCCESS,
     result,
   };
 }
 
-export function readError(message) {
+export function updatePermissionsError(message) {
   return {
-    type: READ_ERROR,
+    type: UPDATE_PERMISSIONS_ERROR,
     message,
   };
 }
-
-// CREATE ------------------------------
-
-export function create(data) {
-  return {
-    type: CREATE,
-    data,
-  };
-}
-
-export function createSuccess(result) {
-  return {
-    type: CREATE_SUCCESS,
-    result,
-  };
-}
-
-export function createError(message) {
-  return {
-    type: CREATE_ERROR,
-    message,
-  };
-}
-
-// EDIT ------------------------------
-
-export function edit(data) {
-  return {
-    type: EDIT,
-    data,
-  };
-}
-
-export function editSuccess(result) {
-  return {
-    type: EDIT_SUCCESS,
-    result,
-  };
-}
-
-export function editError(message) {
-  return {
-    type: EDIT_ERROR,
-    message,
-  };
-}
-
-// REMOVE ------------------------------
-
-export function remove(data) {
-  return {
-    type: DELETE,
-    data,
-  };
-}
-
-export function removeSuccess(result) {
-  return {
-    type: DELETE_SUCCESS,
-    result,
-  };
-}
-
-export function removeError(message) {
-  return {
-    type: DELETE_ERROR,
-    message,
-  };
-}
-
-//  -----------------------------------

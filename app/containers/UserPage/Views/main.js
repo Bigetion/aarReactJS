@@ -16,7 +16,6 @@ import messages from '../messages';
 import ReactDataGrid from 'react-data-grid';
 
 import DataGrid from 'components/DataGrid';
-import VirtualizedTable from 'components/VirtualizedTable'
 import { confirmDialog } from 'utils/confirmDialog';
 
 import FormAdd from './add';
@@ -41,6 +40,8 @@ export class UserPage extends React.PureComponent { // eslint-disable-line react
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onCancel = this.onCancel.bind(this);
+
+    this.onSelected = this.onSelected.bind(this);
 
     this.userList = {
       data: []
@@ -113,6 +114,10 @@ export class UserPage extends React.PureComponent { // eslint-disable-line react
     }, () => { });
   }
 
+  onSelected(selectedIndex) {
+    console.log(selectedIndex);
+  }
+
   onSubmit(myForm) {
     if (this.state.isAdd) {
       this.props.onCreate(myForm);
@@ -178,7 +183,7 @@ export class UserPage extends React.PureComponent { // eslint-disable-line react
     }
 
     const table = (
-      <DataGrid columns={this.columns} data={this.userList.data} />
+      <DataGrid columns={this.columns} data={this.userList.data} onSelected={this.onSelected} />
     )
 
     const actionButton = (
