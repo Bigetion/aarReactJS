@@ -37,6 +37,7 @@ export class UserPage extends React.PureComponent { // eslint-disable-line react
     this.onClickIsAdd = this.onClickIsAdd.bind(this);
     this.onClickIsEdit = this.onClickIsEdit.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
+    this.onClickMultipleDelete = this.onClickMultipleDelete.bind(this);
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onCancel = this.onCancel.bind(this);
@@ -114,8 +115,16 @@ export class UserPage extends React.PureComponent { // eslint-disable-line react
     }, () => { });
   }
 
+  onClickMultipleDelete() {
+    confirmDialog('Do you want to delete selected record?', {
+      title: 'Delete Confirmation'
+    }).then(() => {
+      this.props.onDelete({ idUser: this.state.userListSelected.join(",") });
+    }, () => { });
+  }
+
   onSelected(selectedIndex) {
-    console.log(selectedIndex);
+    this.setState({ userListSelected: selectedIndex });
   }
 
   onSubmit(myForm) {
@@ -183,12 +192,13 @@ export class UserPage extends React.PureComponent { // eslint-disable-line react
     }
 
     const table = (
-      <DataGrid columns={this.columns} data={this.userList.data} onSelected={this.onSelected} />
+      <DataGrid columns={this.columns} data={this.userList.data} selectedKey="id_user" onSelected={this.onSelected} />
     )
 
     const actionButton = (
       <div>
-        <button className="btn btn-primary" onClick={() => { this.onClickIsAdd(true) }}>Add</button>
+        <button className="btn btn-primary" onClick={() => { this.onClickIsAdd(true) }} style={{ marginRight: "5px" }}>Add</button>
+        {(this.state.userListSelected.length > 0 && (this.state.userListSelected.indexOf("1") == -1 && this.state.userListSelected.indexOf("2") == -1)) && (<button className="btn btn-danger" onClick={() => { this.onClickMultipleDelete() }}>Delete</button>)}
       </div>
     )
 

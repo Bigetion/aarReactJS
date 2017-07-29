@@ -21,7 +21,7 @@ class DataGrid extends React.PureComponent {
       originalRows: [],
       rows: [],
       sortBy: {},
-      selectedIndexes:[]
+      selectedIndexes: []
     }
   }
 
@@ -57,19 +57,21 @@ class DataGrid extends React.PureComponent {
   }
 
   onRowsSelected(rows) {
-    const selectedIndexes = this.state.selectedIndexes.concat(rows.map(r => r.rowIdx));
-    if(this.props.onSelected) this.props.onSelected(selectedIndexes);
-    this.setState({selectedIndexes: selectedIndexes});
+    const selectedIndexes = this.state.selectedIndexes.concat(rows.map(r => r.row[this.props.selectedKey]));
+    if (this.props.onSelected) this.props.onSelected(selectedIndexes);
+    this.setState({ selectedIndexes: selectedIndexes });
   }
 
   onRowsDeselected(rows) {
-    let rowIndexes = rows.map(r => r.rowIdx);
-    const selectedIndexes = this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1 );
-    if(this.props.onSelected) this.props.onSelected(selectedIndexes);
-    this.setState({selectedIndexes: selectedIndexes});
+    let rowIndexes = rows.map(r => r.row[this.props.selectedKey]);
+    const selectedIndexes = this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1);
+    if (this.props.onSelected) this.props.onSelected(selectedIndexes);
+    this.setState({ selectedIndexes: selectedIndexes });
   }
 
   render() {
+    let showCheckbox = false;
+    if(this.props.selectedKey) showCheckbox = true;
     return (
       <div style={{ marginBottom: "10px" }}>
         <ReactDataGrid
@@ -79,12 +81,15 @@ class DataGrid extends React.PureComponent {
           rowsCount={this.state.rows.length || 0}
           minHeight={this.getMinHeight()}
           rowSelection={{
-            showCheckbox: true,
+            showCheckbox: showCheckbox,
             enableShiftSelect: true,
             onRowsSelected: this.onRowsSelected,
             onRowsDeselected: this.onRowsDeselected,
             selectBy: {
-              indexes: this.state.selectedIndexes
+              keys: {
+                rowKey: this.props.selectedKey,
+                values: this.state.selectedIndexes
+              }
             }
           }}
         />
@@ -96,7 +101,8 @@ class DataGrid extends React.PureComponent {
 DataGrid.propTypes = {
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.array.isRequired,
-  onSelected: React.PropTypes.func 
+  onSelected: React.PropTypes.func,
+  selectedKey: React.PropTypes.string
 };
 
 export default DataGrid;
