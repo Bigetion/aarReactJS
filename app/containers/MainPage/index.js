@@ -1,6 +1,6 @@
 /*
  *
- * PermissionPage
+ * MainPage
  *
  */
 
@@ -8,7 +8,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {push, replace} from 'react-router-redux';
 
-export class PermissionPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class MainPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div>
@@ -18,7 +18,7 @@ export class PermissionPage extends React.PureComponent { // eslint-disable-line
   }
 }
 
-PermissionPage.propTypes = {
+MainPage.propTypes = {
   children: React.PropTypes.node,
 };
 
@@ -28,4 +28,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(null, mapDispatchToProps)(PermissionPage);
+export default connect(null, mapDispatchToProps)(MainPage);

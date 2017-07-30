@@ -5,6 +5,7 @@
 import { getAsyncInjectors } from 'utils/asyncInjectors';
 
 // import-module-start
+import MainPage from 'containers/MainPage/routes';
 import RolePage from 'containers/RolePage/routes';
 import PermissionPage from 'containers/PermissionPage/routes';
 import UserPage from 'containers/UserPage/routes';
@@ -35,24 +36,25 @@ export default function createRoutes(store) {
   }
 
   return [
-    {
-      path: '/',
-      name: 'Home Page',
-      onEnter: requireAuth,
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          System.import('containers/HomePage'),
-        ]);
+    // {
+    //   path: '/',
+    //   name: 'Home Page',
+    //   onEnter: requireAuth,
+    //   getComponent(nextState, cb) {
+    //     const importModules = Promise.all([
+    //       System.import('containers/HomePage'),
+    //     ]);
 
-        const renderRoute = loadModule(cb);
+    //     const renderRoute = loadModule(cb);
 
-        importModules.then(([component]) => {
-          renderRoute(component);
-        });
+    //     importModules.then(([component]) => {
+    //       renderRoute(component);
+    //     });
 
-        importModules.catch(errorLoading);
-      },
-    },
+    //     importModules.catch(errorLoading);
+    //   },
+    // },
+    MainPage(loadModule, errorLoading, injectReducer, injectSagas, requireAuth),
     RolePage(loadModule, errorLoading, injectReducer, injectSagas, requireAuth),
     PermissionPage(loadModule, errorLoading, injectReducer, injectSagas, requireAuth),
     UserPage(loadModule, errorLoading, injectReducer, injectSagas, requireAuth),

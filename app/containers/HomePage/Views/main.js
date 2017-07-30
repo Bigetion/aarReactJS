@@ -7,9 +7,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import * as actions from './actions';
-import homePageSelector from './selectors';
-import messages from './messages';
+import * as actions from '../actions';
+import homePageSelector from '../selectors';
+import messages from '../messages';
 import Helmet from 'react-helmet';
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function

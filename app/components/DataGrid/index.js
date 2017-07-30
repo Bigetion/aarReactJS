@@ -71,7 +71,18 @@ class DataGrid extends React.PureComponent {
 
   render() {
     let showCheckbox = false;
-    if(this.props.selectedKey) showCheckbox = true;
+    let selectBy = {
+      indexes: []
+    }
+    if (this.props.selectedKey) {
+      showCheckbox = true;
+      selectBy = {
+        keys: {
+          rowKey: this.props.selectedKey,
+          values: this.state.selectedIndexes
+        }
+      }
+    }
     return (
       <div style={{ marginBottom: "10px" }}>
         <ReactDataGrid
@@ -85,12 +96,7 @@ class DataGrid extends React.PureComponent {
             enableShiftSelect: true,
             onRowsSelected: this.onRowsSelected,
             onRowsDeselected: this.onRowsDeselected,
-            selectBy: {
-              keys: {
-                rowKey: this.props.selectedKey,
-                values: this.state.selectedIndexes
-              }
-            }
+            selectBy: selectBy
           }}
         />
       </div>
