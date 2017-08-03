@@ -18,8 +18,10 @@ class VText extends React.Component { // eslint-disable-line react/prefer-statel
   }
 
   getError() {
-    if (this.props.inputState.touched.indexOf(this.props.name) > -1) return this.props.inputState.validationErrors[this.props.name] || "";
-    else return "";
+    if (this.props.inputState.touched) {
+      if (this.props.inputState.touched.indexOf(this.props.name) > -1) return this.props.inputState.validationErrors[this.props.name] || "";
+      else return "";
+    }
   }
 
   handleChange(event) {
@@ -40,9 +42,10 @@ class VText extends React.Component { // eslint-disable-line react/prefer-statel
       )
       defaultClass = "form-control invalid";
     }
+    defaultClass += " " + this.props.className
     return (
       <div className="form-field text-field">
-        <input type="text" className={defaultClass} placeholder={this.props.placeholder} value={this.props.inputState[this.props.name] || ''} onChange={this.handleChange} onBlur={this.handleChange}/>
+        <input type="text" style={this.props.style} className={defaultClass} placeholder={this.props.placeholder} value={this.props.inputState[this.props.name] || ''} onChange={this.handleChange} onBlur={this.handleChange} />
         {errorText}
       </div>
     );

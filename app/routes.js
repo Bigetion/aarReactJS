@@ -3,12 +3,14 @@
 // http://blog.mxstbr.com/2016/01/react-apps-with-pages for more information
 // about the code splitting business
 import { getAsyncInjectors } from 'utils/asyncInjectors';
+import appSagas from 'containers/App/sagas';
 
 // import-module-start
 import MainPage from 'containers/MainPage/routes';
 import RolePage from 'containers/RolePage/routes';
 import PermissionPage from 'containers/PermissionPage/routes';
 import UserPage from 'containers/UserPage/routes';
+import LoginPage from 'containers/LoginPage/routes';
 // import-module-end
 
 const errorLoading = (err) => {
@@ -23,41 +25,24 @@ export default function createRoutes(store) {
   // Create reusable async injectors using getAsyncInjectors factory
   const { injectReducer, injectSagas } = getAsyncInjectors(store); // eslint-disable-line no-unused-vars
 
-  // injectSagas(gSagas);
+  injectSagas(appSagas);
   // injectSagas(authSagas);
 
   function requireAuth(nextState, replace) {
-    // if (!localStorage.jwt || !localStorage.userData) {
-    //   replace({
-    //     pathname: '/login',
-    //     state: {nextPathname: nextState.location.pathname},
-    //   });
-    // }
+    if (!localStorage.jwt) {
+      replace({
+        pathname: '/login',
+        state: {nextPathname: nextState.location.pathname},
+      });
+    }
   }
 
   return [
-    // {
-    //   path: '/',
-    //   name: 'Home Page',
-    //   onEnter: requireAuth,
-    //   getComponent(nextState, cb) {
-    //     const importModules = Promise.all([
-    //       System.import('containers/HomePage'),
-    //     ]);
-
-    //     const renderRoute = loadModule(cb);
-
-    //     importModules.then(([component]) => {
-    //       renderRoute(component);
-    //     });
-
-    //     importModules.catch(errorLoading);
-    //   },
-    // },
     MainPage(loadModule, errorLoading, injectReducer, injectSagas, requireAuth),
     RolePage(loadModule, errorLoading, injectReducer, injectSagas, requireAuth),
     PermissionPage(loadModule, errorLoading, injectReducer, injectSagas, requireAuth),
     UserPage(loadModule, errorLoading, injectReducer, injectSagas, requireAuth),
+    LoginPage(loadModule, errorLoading, injectReducer, injectSagas),
     {
       path: '*',
       name: 'notfound',

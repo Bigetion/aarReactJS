@@ -43,9 +43,14 @@ function checkStatus(response) {
 export default function request(url, options) {
   const opt = Object.assign(options);
   opt.headers = {
-    Authorization: 'Bearer dkIYaHRQXUFoY2Agbi8eLTxEZBEzJj1wQgdXShloDW8kNl1mHGlCXHxORV1VWHRFDw0ydx0KOUoMECw+dQEgXxAPbmszdQoeGDRRNxQTIFEjdU8vWBU+DidmS2ceEkt0bB0MN1wkLnxpXi0xfmVLFnMbQTULFSgcMFQZRTcUF2BXQDZ8YQJvSgs7IiRvMUJsKldMdUxxCFsCEwU4LlpQaXthFFM1DHN7Xi0aBjgCGBI2d0MicB8+eiQxQ2glGh8QMBBIOANvShFEUBJWNg4wa1gSA1BcKVJEcGREDFRXDHkKPUM8O1VwZAIBc3J4XEYLECwfYRY2egQ3STxsExcPBzoTOwsAKDJbQS45EBUPWGdRUFZLKHJvJmQKNUgvPR9CAiY4PwV+eRM+DW4INkhMR1p0ZgFPPRoXRjMhAHMJYG9+cFEDDlx9EQADGG8aXWREa3xcJTkOdyIxOBtbEh4sSBRIK2N+fDMPa1ZbciIDLkA5WWtkAjxcYy8XDnkBLStyBA0pQFxVEW8cFi1bczlgNA0ENyZgLiBQXDt4KkhVeQkpDUs1VDElJ1M4HUU+TkZ6XjlCdhRASAwTT2w9O2sGVTgXO2cBVWBLVV1sfU55PnFaPSwhaXJ1EQgPAk9GZHwOaRxhBXJeDgZjW3sfLFwZFzhYb2Z+KQ==',
     'Content-Type': 'application/json'
   };
+
+  if (localStorage.jwt) {
+    opt.headers = Object.assign(opt.headers, {
+      Authorization: 'Bearer ' + localStorage.jwt
+    })
+  }
 
   return fetch(url, opt)
     .then(checkStatus)

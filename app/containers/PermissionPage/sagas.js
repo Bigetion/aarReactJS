@@ -36,11 +36,11 @@ export function* updatePermissions() {
     });
 
     yield [
-      put(actions.getPermissionsSuccess(result))
+      put(actions.updatePermissionsSuccess(result))
     ];
   } catch (err) {
     yield [
-      put(actions.getPermissionsError(err))
+      put(actions.updatePermissionsError(err))
     ];
   }
 }

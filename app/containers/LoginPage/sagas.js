@@ -4,11 +4,11 @@ import { API_URL, SEARCH_LIMIT } from 'constants/app';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import * as consts from './constants';
 import * as actions from './actions';
-import homeSelector from './selectors';
+import loginSelector from './selectors';
 
-export function* search() {
-  const data = yield select(homeSelector('searchParams'));
-  const requestURL = `${API_URL}/app/getModules`;
+export function* login() {
+  const data = yield select(loginSelector('loginData'));
+  const requestURL = `${API_URL}/login`;
 
   try {
     const result = yield call(request, requestURL, {
@@ -17,18 +17,18 @@ export function* search() {
     });
 
     yield [
-      put(actions.searchSuccess(result))
+      put(actions.loginSuccess(result))
     ];
   } catch (err) {
     yield [
-      put(actions.searchError(err))
+      put(actions.loginError(err))
     ];
   }
 }
 
-export function* homeData() {
+export function* loginData() {
   const watcher = yield [
-    takeLatest(consts.SEARCH, search),
+    takeLatest(consts.LOGIN, login)
   ];
 
   // Suspend execution until location changes
@@ -38,5 +38,5 @@ export function* homeData() {
 
 // All sagas to be loaded
 export default [
-  homeData,
+  loginData,
 ];

@@ -19,6 +19,9 @@ import {
   LOAD_REPOS,
   LOAD_REPOS_SUCCESS,
   LOAD_REPOS_ERROR,
+  GET_USERINFO,
+  GET_USERINFO_SUCCESS,
+  GET_USERINFO_ERROR
 } from './constants';
 
 /**
@@ -58,6 +61,27 @@ export function reposLoaded(repos, username) {
 export function repoLoadingError(error) {
   return {
     type: LOAD_REPOS_ERROR,
+    error,
+  };
+}
+
+export function getUserInfo(params) {
+  return {
+    type: GET_USERINFO,
+    params,
+  };
+}
+
+export function getUserInfoSuccess(result) {
+  return {
+    type: GET_USERINFO_SUCCESS,
+    result,
+  };
+}
+
+export function getUserInfoError(error) {
+  return {
+    type: GET_USERINFO_ERROR,
     error,
   };
 }

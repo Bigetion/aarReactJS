@@ -70,7 +70,7 @@ export class RolePage extends React.PureComponent { // eslint-disable-line react
     }];
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.onSearch({});
   }
 

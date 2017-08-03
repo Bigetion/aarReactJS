@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Formsy from 'formsy-react';
 import { Validations } from 'validations';
-import { VSelect, VText, VTextArea } from 'components/ValidateInput';
+import { VText, VPassword, VTextArea } from 'components/ValidateInput';
 import $ from 'jquery';
 
 const fieldValidations = [{
@@ -9,12 +9,12 @@ const fieldValidations = [{
   label: 'User Name',
   validator: [Validations.Type.required]
 }, {
-  name: 'role',
-  label: 'Role Name',
+  name: 'password',
+  label: 'Password',
   validator: [Validations.Type.required]
 }];
 
-class FormEdit extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class FormLogin extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
 
@@ -27,11 +27,6 @@ class FormEdit extends React.Component { // eslint-disable-line react/prefer-sta
     this.setNewState = this.setNewState.bind(this);
     this.handleSubmitClicked = this.handleSubmitClicked.bind(this);
     this.handleCancelClicked = this.handleCancelClicked.bind(this);
-  }
-
-  componentWillMount() {
-    let newState = Object.assign(this.props.state, this.state);
-    this.setState(newState);
   }
 
   setNewState(newState) {
@@ -56,52 +51,48 @@ class FormEdit extends React.Component { // eslint-disable-line react/prefer-sta
   render() {
     return (
       <div>
-        <div className="box box-widget">
-          <div className="box-header with-border">
-            <h3 className="box-title">Edit User</h3>
-          </div>
-          <Formsy.Form onSubmit={this.handleSubmitClicked}>
+        <Formsy.Form onSubmit={this.handleSubmitClicked}>
+          <div className="" style={{ position: "relative" }}>
             <div className="box-body">
+              <p className="login-box-msg">Sign in to start your session</p>
               <div className="form-group">
-                <label>User Name</label>
                 <VText
                   name="userName"
                   placeholder="User Name"
                   inputState={this.state}
                   fieldValidations={fieldValidations}
                   onChangeState={this.setNewState}
+                  style={{ fontSize: "20px" }}
+                  className="input-lg"
                 />
               </div>
               <div className="form-group">
-                <label>Role Name</label>
-                <VSelect
-                  name="role"
-                  placeholder="Role Name"
-                  labelKey="role_name"
-                  defaultValue={this.state.role}
-                  options={[{ id_role: '1', role_name: 'Administrator' }, { id_role: '2', role_name: 'Guest' }]}
+                <VPassword
+                  name="password"
+                  placeholder="Password"
                   inputState={this.state}
                   fieldValidations={fieldValidations}
                   onChangeState={this.setNewState}
-                  disabled={this.state.idUser=='1' || this.state.idUser=='2'}
+                  style={{ fontSize: "20px" }}
+                  className="input-lg"
                 />
               </div>
+              <div className="row">
+                <div className="col-xs-4">
+                  <button type="submit" className="btn btn-primary btn-block btn-flat">Sign In</button>
+                </div>
+              </div>
             </div>
-            <div className="box-footer">
-              <button type="submit" className="btn btn-primary" style={{ marginRight: '5px' }}>Submit</button>
-              <button type="button" className="btn btn-default" onClick={this.handleCancelClicked}>Cancel</button>
-            </div>
-          </Formsy.Form>
-        </div>
+          </div>
+        </Formsy.Form>
       </div>
     );
   }
 }
 
-FormEdit.propTypes = {
-  state: PropTypes.object,
+FormLogin.propTypes = {
   onSubmit: PropTypes.func,
   onCancel: PropTypes.func,
 };
 
-export default FormEdit
+export default FormLogin

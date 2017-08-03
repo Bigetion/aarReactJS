@@ -16,6 +16,9 @@ import {
   LOAD_REPOS_SUCCESS,
   LOAD_REPOS,
   LOAD_REPOS_ERROR,
+  GET_USERINFO,
+  GET_USERINFO_SUCCESS,
+  GET_USERINFO_ERROR
 } from './constants';
 
 // The initial state of the App
@@ -26,6 +29,7 @@ const initialState = fromJS({
   userData: {
     repositories: false,
   },
+  userInfo: {}
 });
 
 function appReducer(state = initialState, action) {
@@ -44,6 +48,15 @@ function appReducer(state = initialState, action) {
       return state
         .set('error', action.error)
         .set('loading', false);
+    case GET_USERINFO:
+      return state
+        .set('getUserInfo', action.params)
+    case GET_USERINFO_SUCCESS:
+      return state
+        .set('getUserInfoSuccess', action.result)
+    case GET_USERINFO_ERROR:
+      return state
+        .set('getUserInfoError', action.error)
     default:
       return state;
   }

@@ -1,6 +1,6 @@
 /**
 *
-* VTextArea
+* VPassword
 *
 */
 import React from 'react';
@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { Validations } from 'validations';
 
 
-class VTextArea extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class VPassword extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
     this.state = {
@@ -45,18 +45,18 @@ class VTextArea extends React.Component { // eslint-disable-line react/prefer-st
     defaultClass += " " + this.props.className
     return (
       <div className="form-field text-field">
-        <textarea style={this.props.style} className={defaultClass} placeholder={this.props.placeholder} value={this.props.inputState[this.props.name] || ''} onChange={this.handleChange} onBlur={this.handleChange}/>
+        <input type="password" style={this.props.style} className={defaultClass} placeholder={this.props.placeholder} value={this.props.inputState[this.props.name] || ''} onChange={this.handleChange} onBlur={this.handleChange} />
         {errorText}
       </div>
     );
   }
 }
 
-VTextArea.propTypes = {
+VPassword.propTypes = {
+  name: React.PropTypes.string.isRequired,
   inputState: React.PropTypes.object.isRequired,
   onChangeState: React.PropTypes.func.isRequired,
-  name: React.PropTypes.string.isRequired,
   fieldValidations: React.PropTypes.array.isRequired,
 };
 
-export default VTextArea;
+export default VPassword;

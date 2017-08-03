@@ -71,6 +71,7 @@ class VSelect extends React.Component { // eslint-disable-line react/prefer-stat
           valueKey={this.props.valueKey}
           onChange={this.handleChange} 
           onBlur={this.handleBlur}
+          disabled={this.props.disabled}
         />
         {errorText}
       </div>

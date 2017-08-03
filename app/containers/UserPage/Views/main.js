@@ -180,6 +180,7 @@ export class UserPage extends React.PureComponent { // eslint-disable-line react
     let editTemplate = (<div></div>);
     if (this.state.isEdit) {
       const editState = {
+        idUser: this.userListRowSelected.id_user,
         userName: this.userListRowSelected.username,
         role: {
           id_role: this.userListRowSelected.id_role,

@@ -7,6 +7,10 @@
  */
 
 import React from 'react';
+import { replace } from 'react-router-redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 
@@ -19,47 +23,104 @@ import { Link } from 'react-router';
 
 import LogoImg from 'assets/img/aar32.png';
 
+import { makeSelectGetUserInfo } from './selectors';
+import * as actions from './actions';
+
 const AppWrapper = styled.div``;
 
-export function App(props) {
-  return (
-    <AppWrapper>
-      <Helmet
-        titleTemplate="%s - React.js Boilerplate"
-        defaultTitle="React.js Boilerplate"
-        meta={[
-          { name: 'description', content: 'A React.js Boilerplate application' },
-        ]}
-      />
-      <div className="content-wrapper">
-        <section className="content">
-          <div className="row">
-            <div className="col-md-2">
-              <div className="box box-widget">
-                <div className="box-body box-profile"><Img src={LogoImg} alt="Logo"/> <strong>AAR Framework</strong></div>
-                <div className="box-footer no-padding">
-                  <ul className="nav nav-stacked">
-                    <li><Link to="/">Modules</Link></li>
-                    <li><Link to="/roles">Roles</Link></li>
-                    <li><Link to="/permissions">Permissions</Link></li>
-                    <li><Link to="/users">Users</Link></li>
-                    <li><a>Logout</a></li>
-                  </ul>
+class App extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      currentRoutes: ''
+    }
+    this.logout = this.logout.bind(this);
+
+    this.currentRoutes = props.router.location.pathname;
+  }
+
+  componentDidMount() {
+    this.props.onGetUserInfo();
+  }
+
+  componentDidUpdate(prevProps, nextProps) {
+    if (this.state.currentRoutes != prevProps.router.location.pathname) {
+      this.currentRoutes = prevProps.router.location.pathname;
+      this.setState({ currentRoutes: prevProps.router.location.pathname })
+    }
+  }
+
+  logout() {
+    const currentRoutes = this.props.location.pathname;
+    if (currentRoutes != '/login') this.props.onLogout();
+  }
+
+  render() {
+    return (
+      <AppWrapper>
+        <Helmet
+          titleTemplate="%s - AAR Framework"
+          defaultTitle="AAR Framework"
+          meta={[
+            { name: 'description', content: 'AAR Framework application' },
+          ]}
+        />
+        <div className="content-wrapper">
+          <section className="content">
+            <div className="row">
+              {(this.currentRoutes != '/login') && (<div className="col-md-2">
+                <div className="box box-widget">
+                  <div className="box-body box-profile"><Img src={LogoImg} alt="Logo" /> <strong>AAR Framework</strong></div>
+                  <div className="box-footer no-padding">
+                    <ul className="nav nav-stacked">
+                      <li className={(this.currentRoutes == '/') ? 'active' : ''}><Link to="/">Modules</Link></li>
+                      <li className={(this.currentRoutes == '/roles') ? 'active' : ''}><Link to="/roles">Roles</Link></li>
+                      <li className={(this.currentRoutes == '/permissions') ? 'active' : ''}><Link to="/permissions">Permissions</Link></li>
+                      <li className={(this.currentRoutes == '/users') ? 'active' : ''}><Link to="/users">Users</Link></li>
+                      <li><a onClick={this.logout}>Logout</a></li>
+                    </ul>
+                  </div>
                 </div>
+              </div>)}
+              <div className={(this.currentRoutes != '/login') ? 'col-md-10' : 'col-md-12'}>
+                {React.Children.toArray(this.props.children)}
               </div>
             </div>
-            <div className="col-md-10">
-              {React.Children.toArray(props.children)}
-            </div>
-          </div>
-        </section>
-      </div>
-    </AppWrapper>
-  );
+          </section>
+        </div>
+      </AppWrapper>
+    );
+  }
 }
 
 App.propTypes = {
   children: React.PropTypes.node,
+  onLogout: React.PropTypes.func,
+  onGetUserInfo: React.PropTypes.func,
+  onGetUserInfoSuccess: React.PropTypes.object
 };
 
-export default withProgressBar(App);
+App.contextTypes = {
+  router: React.PropTypes.object,
+};
+
+const mapStateToProps = createStructuredSelector({
+  onGetUserInfoSuccess: makeSelectGetUserInfo('getUserInfoSuccess')
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onGetUserInfo: (val) => dispatch(actions.getUserInfo(val)),
+    onLogout: () => {
+      localStorage.clear();
+      dispatch(replace({
+        pathname: '/login'
+      }))
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withProgressBar(App));
+
+// export default withProgressBar(App);

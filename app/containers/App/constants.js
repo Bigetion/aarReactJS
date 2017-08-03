@@ -13,3 +13,7 @@ export const LOAD_REPOS = 'boilerplate/App/LOAD_REPOS';
 export const LOAD_REPOS_SUCCESS = 'boilerplate/App/LOAD_REPOS_SUCCESS';
 export const LOAD_REPOS_ERROR = 'boilerplate/App/LOAD_REPOS_ERROR';
 export const DEFAULT_LOCALE = 'en';
+
+export const GET_USERINFO = 'boilerplate/App/GET_USERINFO';
+export const GET_USERINFO_SUCCESS = 'boilerplate/App/GET_USERINFO_SUCCESS'
+export const GET_USERINFO_ERROR = 'boilerplate/App/GET_USERINFO_ERROR'

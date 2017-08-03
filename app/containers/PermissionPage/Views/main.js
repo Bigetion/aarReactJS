@@ -32,7 +32,7 @@ export class PermissionPage extends React.PureComponent {
     this.renderRoleTd = this.renderRoleTd.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.onGetPermissions({});
   }
 
