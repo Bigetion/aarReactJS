@@ -24,7 +24,8 @@ const customHost = argv.host || process.env.HOST;
 const host = customHost || null; // Let http.Server use its default IPv6/4 host
 const prettyHost = customHost || 'localhost';
 
-const port = argv.port || process.env.PORT || 3000;
+const intendedPort = process.argv[3] || 3000;
+const port = process.env.PORT || intendedPort;
 
 // Start your app.
 app.listen(port, host, (err) => {
