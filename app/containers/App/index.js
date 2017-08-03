@@ -114,9 +114,7 @@ function mapDispatchToProps(dispatch) {
     onGetUserInfo: (val) => dispatch(actions.getUserInfo(val)),
     onLogout: () => {
       localStorage.clear();
-      dispatch(replace({
-        pathname: '/login'
-      }))
+      window.location.reload();
     },
   };
 }

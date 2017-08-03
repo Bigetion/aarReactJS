@@ -6,7 +6,7 @@ import $ from 'jquery';
 
 const fieldValidations = [{
   name: 'userName',
-  label: 'User Name',
+  label: 'Username',
   validator: [Validations.Type.required]
 }, {
   name: 'password',
@@ -53,12 +53,12 @@ class FormLogin extends React.Component { // eslint-disable-line react/prefer-st
       <div>
         <Formsy.Form onSubmit={this.handleSubmitClicked}>
           <div className="" style={{ position: "relative" }}>
-            <div className="box-body">
+            <div className="login-box-body">
               <p className="login-box-msg">Sign in to start your session</p>
               <div className="form-group">
                 <VText
                   name="userName"
-                  placeholder="User Name"
+                  placeholder="Username"
                   inputState={this.state}
                   fieldValidations={fieldValidations}
                   onChangeState={this.setNewState}
