@@ -1,13 +1,11 @@
 import React, { PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 
-import Modal from 'react-bootstrap/lib/Modal'
-import Button from 'react-bootstrap/lib/Button'
+import Modal from 'react-bootstrap/lib/Modal';
+import Button from 'react-bootstrap/lib/Button';
 import { confirmable } from 'react-confirm';
 
 class Confirmation extends React.Component {
-  componentDidMount(){
-    ReactDOM.findDOMNode(this.refs.ok).focus();
+  componentDidMount() {
   }
   render() {
     const {
@@ -23,7 +21,7 @@ class Confirmation extends React.Component {
     } = this.props;
     return (
       <div className="static-modal">
-        <Modal show={show} onHide={dismiss} backdrop={enableEscape ? true : 'static'} keyboard={enableEscape} bsSize="sm">
+        <Modal show={show} onHide={dismiss} style={{ marginTop: '30%' }} backdrop={enableEscape ? true : 'static'} keyboard={enableEscape} bsSize="sm">
           <Modal.Header>
             <Modal.Title>{title}</Modal.Title>
           </Modal.Header>
@@ -31,12 +29,12 @@ class Confirmation extends React.Component {
             {confirmation}
           </Modal.Body>
           <Modal.Footer>
-            <Button ref="ok" className='button-l' bsStyle="primary" onClick={proceed}>{okLabbel}</Button>
+            <Button className="button-l" bsStyle="primary" onClick={proceed}>{okLabbel}</Button>
             <Button bsStyle="warning" onClick={cancel}>{cancelLabel}</Button>
           </Modal.Footer>
         </Modal>
       </div>
-    )
+    );
   }
 }
 
@@ -46,10 +44,10 @@ Confirmation.propTypes = {
   title: PropTypes.string,
   confirmation: PropTypes.string,
   show: PropTypes.bool,
-  proceed: PropTypes.func,     // called when ok button is clicked.
-  cancel: PropTypes.func,      // called when cancel button is clicked.
-  dismiss: PropTypes.func,     // called when backdrop is clicked or escaped.
+  proceed: PropTypes.func,
+  cancel: PropTypes.func,
+  dismiss: PropTypes.func,
   enableEscape: PropTypes.bool,
-}
+};
 
 export default confirmable(Confirmation);

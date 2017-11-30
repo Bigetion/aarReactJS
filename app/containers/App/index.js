@@ -14,9 +14,9 @@ import { createStructuredSelector } from 'reselect';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 
-import Header from 'components/Header';
-import Footer from 'components/Footer';
 import Img from 'components/Img';
+
+import { Layout, Menu, Icon } from 'antd';
 
 import withProgressBar from 'components/ProgressBar';
 import { Link } from 'react-router';
@@ -26,15 +26,19 @@ import LogoImg from 'assets/img/aar32.png';
 import { makeSelectGetUserInfo } from './selectors';
 import * as actions from './actions';
 
+
 const AppWrapper = styled.div``;
+const { SubMenu } = Menu;
+const { Header, Content, Sider } = Layout;
 
 class App extends React.PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      currentRoutes: ''
-    }
+      currentRoutes: '',
+    };
+
     this.logout = this.logout.bind(this);
 
     this.currentRoutes = props.router.location.pathname;
@@ -53,7 +57,7 @@ class App extends React.PureComponent {
 
   logout() {
     const currentRoutes = this.props.location.pathname;
-    if (currentRoutes != '/login') this.props.onLogout();
+    if (currentRoutes !== '/login') this.props.onLogout();
   }
 
   render() {
@@ -66,29 +70,46 @@ class App extends React.PureComponent {
             { name: 'description', content: 'AAR Framework application' },
           ]}
         />
-        <div className="content-wrapper">
-          <section className="content">
-            <div className="row">
-              {(this.currentRoutes != '/login') && (<div className="col-md-2">
-                <div className="box box-widget">
-                  <div className="box-body box-profile"><Img src={LogoImg} alt="Logo" /> <strong>AAR Framework</strong></div>
-                  <div className="box-footer no-padding">
-                    <ul className="nav nav-stacked">
-                      <li className={(this.currentRoutes == '/') ? 'active' : ''}><Link to="/">Modules</Link></li>
-                      <li className={(this.currentRoutes == '/roles') ? 'active' : ''}><Link to="/roles">Roles</Link></li>
-                      <li className={(this.currentRoutes == '/permissions') ? 'active' : ''}><Link to="/permissions">Permissions</Link></li>
-                      <li className={(this.currentRoutes == '/users') ? 'active' : ''}><Link to="/users">Users</Link></li>
-                      <li><a onClick={this.logout}>Logout</a></li>
-                    </ul>
-                  </div>
-                </div>
-              </div>)}
-              <div className={(this.currentRoutes != '/login') ? 'col-md-10' : 'col-md-12'}>
+        <Layout>
+          {(this.currentRoutes !== '/login') && (
+            <Header className="header">
+              <Img src={LogoImg} alt="Logo" /> <span style={{ fontSize: '20px', marginLeft: '10px' }}>AAR Framework</span>
+            </Header>
+          )}
+          <Layout>
+            {(this.currentRoutes !== '/login') && (<Sider width={200} style={{ background: '#fff' }}>
+              <Menu defaultSelectedKeys={['1']} mode="inline">
+                <Menu.Item key="1" onClick={this.handleClick}>
+                  <Icon type="home" /> Modules
+                  <Link to="/"> </Link>
+                </Menu.Item>
+                <Menu.Item key="2" onClick={this.handleClick}>
+                  <Icon type="desktop" /> Roles
+                  <Link to="/roles"> </Link>
+                </Menu.Item>
+                <Menu.Item key="3" onClick={this.handleClick}>
+                  <Icon type="file" />
+                  <span>Permissions</span>
+                  <Link to="/permissions"> </Link>
+                </Menu.Item>
+                <Menu.Item key="4" onClick={this.handleClick}>
+                  <Icon type="user" />
+                  <span>Users</span>
+                  <Link to="/users"> </Link>
+                </Menu.Item>
+                <Menu.Item key="5" onClick={this.logout}>
+                  <Icon type="logout" />
+                  <span onClick={this.logout}>Logout</span>
+                </Menu.Item>
+              </Menu>
+            </Sider>)}
+            <Layout style={{ padding: (this.currentRoutes !== '/login') ? '0 0 0 10px' : '0' }}>
+              <Content style={{ background: (this.currentRoutes !== '/login') ? '#fff' : 'none', padding: 24, margin: 0, minHeight: 280 }}>
                 {React.Children.toArray(this.props.children)}
-              </div>
-            </div>
-          </section>
-        </div>
+              </Content>
+            </Layout>
+          </Layout>
+        </Layout>
       </AppWrapper>
     );
   }
@@ -98,7 +119,7 @@ App.propTypes = {
   children: React.PropTypes.node,
   onLogout: React.PropTypes.func,
   onGetUserInfo: React.PropTypes.func,
-  onGetUserInfoSuccess: React.PropTypes.object
+  onGetUserInfoSuccess: React.PropTypes.object,
 };
 
 App.contextTypes = {
@@ -106,7 +127,7 @@ App.contextTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  onGetUserInfoSuccess: makeSelectGetUserInfo('getUserInfoSuccess')
+  onGetUserInfoSuccess: makeSelectGetUserInfo('getUserInfoSuccess'),
 });
 
 function mapDispatchToProps(dispatch) {

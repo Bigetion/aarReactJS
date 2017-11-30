@@ -13,4 +13,25 @@ height: 100%;
 .react-grid-Container{
 height: 100%;
 }
+
+.ant-menu-item .anticon + span, .ant-menu-submenu-title .anticon + span{
+  overflow:initial;
+}
+
+.ant-layout-header{
+  background: #ffffff;
+  margin-bottom: 5px;
+}
+
+.ant-layout {
+  background: none;
+}
+
+.ant-layout-header {
+  padding: 0 10px;
+}
+
+ant-layout-content {
+  background: none !important;
+}
 `;
